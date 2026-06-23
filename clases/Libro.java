@@ -24,6 +24,7 @@ public class Libro {
     public String getitulo(){return this.titulo;}
 
     public void setautor(String autor){this.autor = autor;}
+    public void  
     
 
 
