@@ -2,7 +2,7 @@ package estructuras;
 
 
 public class LinkedBST<E extends Comparable<E>> {
-    private Node<E> root;
+    private NodeBST<E> root;
 
     public LinkedBST() {
         this.root = null; // arbol inicial esta vacio
@@ -14,9 +14,9 @@ public class LinkedBST<E extends Comparable<E>> {
     	this.root = insertRecursive(this.root , data);
     }
     
-    public Node<E> insertRecursive(Node<E> current, E data) throws ItemDuplicated {
+    public NodeBST<E> insertRecursive(NodeBST<E> current, E data) throws ItemDuplicated {
         if (current == null) {
-            return new Node<>(data); // encontramos el lugar vacío
+            return new NodeBST<>(data); // encontramos el lugar vacío
         }
 
         int compare = data.compareTo(current.data);
@@ -37,7 +37,7 @@ public class LinkedBST<E extends Comparable<E>> {
     	return searchrecurive(this.root, data);
     }
     
-    public E searchrecurive(Node<E> current,E data) throws ItemNotfound{
+    public E searchrecurive(NodeBST<E> current,E data) throws ItemNotfound{
     	if(current == null ) {
     		throw new ItemNotfound("no se encontro el dato ");
     	}
@@ -64,7 +64,7 @@ public class LinkedBST<E extends Comparable<E>> {
     	if (isEmpty()) return "arbol vacio";
     	
     	return "raiz del arbol es" + root.data;
-     }
+    }
     
     //ELIMINACION
     public void remove(E data) throws ExceptionIsEmpty {
@@ -75,7 +75,7 @@ public class LinkedBST<E extends Comparable<E>> {
     }
     
     
-    public Node<E> removeRe(Node<E> current, E data){
+    public NodeBST<E> removeRe(NodeBST<E> current, E data){
     	if (current == null) {
     		return null;
     	}
@@ -97,7 +97,7 @@ public class LinkedBST<E extends Comparable<E>> {
     	return current;
     	
     }
-    private E findMin(Node<E> node) {
+    private E findMin(NodeBST<E> node) {
         if  (node.left == null) {
         	return node.data ;
         }else{
@@ -111,7 +111,7 @@ public class LinkedBST<E extends Comparable<E>> {
     	System.out.println();
     }
     
-    private void inOrderRec(Node<E> current) {
+    private void inOrderRec(NodeBST<E> current) {
     	
     	if (current != null) {
     		inOrderRec(current.left);   // recorre el ubarbol izquierdo
@@ -126,7 +126,7 @@ public class LinkedBST<E extends Comparable<E>> {
         System.out.println();
     }
 
-    private void preOrderRec(Node<E> current) {
+    private void preOrderRec(NodeBST<E> current) {
         if (current != null) {
             System.out.print(current.data + " ");
             preOrderRec(current.left);
@@ -141,7 +141,7 @@ public class LinkedBST<E extends Comparable<E>> {
         System.out.println();
     }
 
-    private void postOrderRec(Node<E> current) {
+    private void postOrderRec(NodeBST<E> current) {
         if (current != null) {
             postOrderRec(current.left);
             postOrderRec(current.right); 
@@ -157,7 +157,7 @@ public class LinkedBST<E extends Comparable<E>> {
         System.out.println();
     }
 
-    private void printDescendingRec(Node<E> current) {
+    private void printDescendingRec(NodeBST<E> current) {
         if (current != null) {
             printDescendingRec(current.right); // primero lo mayores
             System.out.print(current.data + " "); // raiz
@@ -172,7 +172,7 @@ public class LinkedBST<E extends Comparable<E>> {
         System.out.println();
     }
 
-    private void parenthesizeRec(Node<E> current, int nivel) {
+    private void parenthesizeRec(NodeBST<E> current, int nivel) {
         if (current != null) {
         	//inicio de sangria
             for (int i = 0; i < nivel; i++) System.out.print("  ");
@@ -192,7 +192,7 @@ public class LinkedBST<E extends Comparable<E>> {
         return isValidBST(this.root, null, null);
     }
     
-    private boolean isValidBST(Node<E> node, E min, E max) {
+    private boolean isValidBST(NodeBST<E> node, E min, E max) {
         if (node == null) {
             return true;
         }
@@ -208,7 +208,6 @@ public class LinkedBST<E extends Comparable<E>> {
 
         //el maximo permitido es el nodo actual, si va por la izq
         // el minimo permitido es el nodo actual ,si va por la der
-        return isValidBST(node.left, min, node.data) && 
-               isValidBST(node.right, node.data, max);
+        return isValidBST(node.left, min, node.data) && isValidBST(node.right, node.data, max);
     }
 }
