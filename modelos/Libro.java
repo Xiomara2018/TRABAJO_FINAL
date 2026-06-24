@@ -13,13 +13,6 @@ public class Libro implements Comparable<Libro> {
 
     public Libro(int codigo, String titulo, String autor, String categoria, int anio, EstadoLibro estado)
             throws ExceptionIsEmpty {
-    	
-    	 this.codigo = codigo;
-         this.titulo = titulo;
-         this.autor = autor;
-         this.categoria = categoria;
-         this.anio = anio;
-         this.estado = estado;
 
         if (titulo == null) {
             throw new ExceptionIsEmpty("El titulo no puede estar vacio");
@@ -32,6 +25,14 @@ public class Libro implements Comparable<Libro> {
         if (categoria == null) {
             throw new ExceptionIsEmpty("La categoria no puede estar vacia");
         }
+        
+        
+        this.codigo = codigo;
+        this.titulo = titulo;
+        this.autor = autor;
+        this.categoria = categoria;
+        this.anio = anio;
+        this.estado = estado;
 
     }
 
@@ -86,6 +87,6 @@ public class Libro implements Comparable<Libro> {
 
     @Override
     public String toString() {
-        return codigo + " Codigo: " + titulo + " Titulo: " + autor + "Autor: "+ categoria + " Categoria: " + anio + " Año ";
+        return codigo + " - " + titulo + " - " + autor + " - " + categoria + " - " + anio + " - " + estado;
     }
 }
