@@ -1,11 +1,11 @@
 package estructuras;
 
 public class NodeAVL<E> {
-    T data;                 // dato almacenado
-    NodeAVL<T> left;       // hijo izquierdo
-    NodeAVL<T> right;      // hijo derecho
+    E data;                 // dato almacenado
+    NodeAVL<E> left;       // hijo izquierdo
+    NodeAVL<E> right;      // hijo derecho
     int height;            // altura del nodo
-    public NodeAVL(T data) {
+    public NodeAVL(E data) {
         this.data = data;
         this.left = null;
         this.right = null;
