@@ -1,213 +1,96 @@
 package estructuras;
+public class AVLTree<E extends Comparable<E>> {
+    private NodeAVL<E> root;
+    public AVLTree() {
+        this.root = null;
+    }
+    // ALTURA DEL NODO
+    private int height(NodeAVL<E> node) {
+        return (node == null) ? 0 : node.height;
+    }
+    // FACTOR DE BALANCE
+    // izquierda - derecha
+    // sirve para detectar desbalance en el árbol AVL
+    private int getBalance(NodeAVL<E> node) {
+        return (node == null) ? 0 : height(node.left) - height(node.right);
+    }
+    // ROTACIÓN DERECHA 
+    private NodeAVL<E> rightRotate(NodeAVL<E> y) {
+        NodeAVL<E> x = y.left;      // hijo izquierdo
+        NodeAVL<E> T2 = x.right;    // subárbol intermedio
+        // rotación: x sube, y baja a la derecha
+        x.right = y;
+        y.left = T2;
+        // actualiza  altura de y después del cambio
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        // actualizar altura de x (nueva raíz del subárbol)
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        return x; // nueva raíz del subárbol
+    }
+    // ROTACIÓN IZQUIERDA 
+    private NodeAVL<E> leftRotate(NodeAVL<E> x) {
 
+        NodeAVL<E> y = x.right;     // hijo derecho
+        NodeAVL<E> T2 = y.left;     // subárbol intermedio
 
-public class LinkedBST<E extends Comparable<E>> {
-    private NodeBST<E> root;
+        // rotación: y sube, x baja a la izquierda
+        y.left = x;
+        x.right = T2;
 
-    public LinkedBST() {
-        this.root = null; // arbol inicial esta vacio
-    }
-    
-    
-    //INSERCION 
-    public void insertDiv(E data) throws ItemDuplicated {
-    	this.root = insertRecursive(this.root , data);
-    }
-    
-    public NodeBST<E> insertRecursive(NodeBST<E> current, E data) throws ItemDuplicated {
-        if (current == null) {
-            return new NodeBST<>(data); // encontramos el lugar vacío
-        }
+        // actualizar alturas después del cambio
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
 
-        int compare = data.compareTo(current.data);
-
-        if (compare == 0) {
-            throw new ItemDuplicated("El dato " + data + " ya existe.");
-        } else if (compare < 0) {
-            current.left = insertRecursive(current.left, data); // Ir a la izquierda
-        } else {
-            current.right = insertRecursive(current.right, data); // Ir a la derecha
-        }
-
-        return current;
+        return y; // nueva raíz del subárbol
     }
-    
-    //BUQUEDA
-    public E search(E data) throws ItemNotfound{
-    	return searchrecurive(this.root, data);
+    public void insert(E data) throws ItemDuplicated {
+        root = insertRec(root, data);
     }
-    
-    public E searchrecurive(NodeBST<E> current,E data) throws ItemNotfound{
-    	if(current == null ) {
-    		throw new ItemNotfound("no se encontro el dato ");
-    	}
-    	int compare = data.compareTo(current.data);
-    	if (compare == 0) {
-    		return current.data;
-    	}
-        	
-    	if(compare< 0) {
-    		return searchrecurive(current.left , data);
-    	}
-    		else{
-    		return searchrecurive(current.right , data);
-    	}
-    }
-    
-    
-    //VERIFICAR SI ESTA VACIO
-    public boolean isEmpty() {
-		return this.root == null ;
-	}
-    
-    public String toString() {
-    	if (isEmpty()) return "arbol vacio";
-    	
-    	return "raiz del arbol es" + root.data;
-    }
-    
-    //ELIMINACION
-    public void remove(E data) throws ExceptionIsEmpty {
-        if (isEmpty()) {
-            throw new ExceptionIsEmpty("esta vacio");
-        }
-        this.root = removeRe(this.root, data);
-    }
-    
-    
-    public NodeBST<E> removeRe(NodeBST<E> current, E data){
-    	if (current == null) {
-    		return null;
-    	}
-    	
-    	int compare = data.compareTo(current.data);
-    	if (compare < 0) {
-    		current.left = removeRe(current.left, data);
-    	}else if(compare>0){
-			current.right = removeRe(current.right, data);
-		}else {//si el nodo tiene un hijo o ninguno
-			if(current.left == null) return current.right;
-			if(current.right == null) return current.left;
-
-			//si tiene do hijos
-			current.data = findMin(current.right);
-			current.right = removeRe(current.right, current.data);
-		}
-    	
-    	return current;
-    	
-    }
-    private E findMin(NodeBST<E> node) {
-        if  (node.left == null) {
-        	return node.data ;
-        }else{
-        	return findMin(node.left);
-        }
-    }
-    
-    //inorder
-    public void inOrder() {
-    	inOrderRec(this.root);
-    	System.out.println();
-    }
-    
-    private void inOrderRec(NodeBST<E> current) {
-    	
-    	if (current != null) {
-    		inOrderRec(current.left);   // recorre el ubarbol izquierdo
-            System.out.print(current.data + " "); // visitar la raiz
-            inOrderRec(current.right);  //recorrer subarbol derecho
-        }
-	}
-    
-    //preorder
-    public void preOrder() {
-        preOrderRec(this.root);
-        System.out.println();
-    }
-
-    private void preOrderRec(NodeBST<E> current) {
-        if (current != null) {
-            System.out.print(current.data + " ");
-            preOrderRec(current.left);
-            preOrderRec(current.right);//final derecha
-        }
-    }
-    
-    //posorder
-    
-    public void postOrder() {
-        postOrderRec(this.root);
-        System.out.println();
-    }
-
-    private void postOrderRec(NodeBST<E> current) {
-        if (current != null) {
-            postOrderRec(current.left);
-            postOrderRec(current.right); 
-            System.out.print(current.data + " ");  //raiz al final
-        }
-    }
-    
-    
-    //esto para el caso aplicado resumido recorrido inverso inorden
-    
-    public void printDescending() {
-        printDescendingRec(this.root);
-        System.out.println();
-    }
-
-    private void printDescendingRec(NodeBST<E> current) {
-        if (current != null) {
-            printDescendingRec(current.right); // primero lo mayores
-            System.out.print(current.data + " "); // raiz
-            printDescendingRec(current.left);  // los menores 
-        }
-    }
-    
-    
-    //ejer4 
-    public void parenthesize() {
-        parenthesizeRec(this.root, 0);
-        System.out.println();
-    }
-
-    private void parenthesizeRec(NodeBST<E> current, int nivel) {
-        if (current != null) {
-        	//inicio de sangria
-            for (int i = 0; i < nivel; i++) System.out.print("  ");
-            System.out.println(current.data + " (");
-            
-            parenthesizeRec(current.left, nivel + 1);
-            parenthesizeRec(current.right, nivel + 1);
-            
-        	//fin de sangria
-            for (int i = 0; i < nivel; i++) System.out.print("  ");
-            System.out.println(")"); // Cierra]
-        }
-    }
-    
-    //verificador del arbol
-    public boolean isValidBST() {
-        return isValidBST(this.root, null, null);
-    }
-    
-    private boolean isValidBST(NodeBST<E> node, E min, E max) {
+    // INSERCIÓN RECURSIVA
+    private NodeAVL<E> insertRec(NodeAVL<E> node, E data) throws ItemDuplicated {
+        // si el nodo está vacío se inserta el nuevo libro
         if (node == null) {
-            return true;
+            return new NodeAVL<>(data);
+        }
+        // comparar el dato con el nodo actual
+        int cmp = data.compareTo(node.data);
+
+        // si son iguales  no se permite duplicados
+        if (cmp == 0) {
+            throw new ItemDuplicated("Elemento duplicado: " + data);
+        }
+        // si es menor se va  a  ir a la izquierda
+        if (cmp < 0) {
+            node.left = insertRec(node.left, data);
+        }
+        // si es mayor  se va ir a la derecha
+        else {
+            node.right = insertRec(node.right, data);
         }
 
-        // todos los nodos del subarbol izquierdo deben ser menores que la raiz
-        if (min != null && node.data.compareTo(min) <= 0) {
-            return false;
-        }
-        //  lo contrario 
-        if (max != null && node.data.compareTo(max) >= 0) {
-            return false;
-        }
+        // actualizar altura del nodo actual después de insertar
+        node.height = 1 + Math.max(height(node.left), height(node.right));
 
-        //el maximo permitido es el nodo actual, si va por la izq
-        // el minimo permitido es el nodo actual ,si va por la der
-        return isValidBST(node.left, min, node.data) && isValidBST(node.right, node.data, max);
+        // calcular balance del nodo
+        int balance = getBalance(node);
+		
+        // CASO LL (izquierda-izquierda)
+        if (balance > 1 && data.compareTo(node.left.data) < 0)
+            return rightRotate(node);
+        // CASO RR (derecha-derecha)
+        if (balance < -1 && data.compareTo(node.right.data) > 0)
+            return leftRotate(node);
+
+        // CASO LR (izquierda-derecha)
+        if (balance > 1 && data.compareTo(node.left.data) > 0) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+        // CASO RL (derecha-izquierda)
+        if (balance < -1 && data.compareTo(node.right.data) < 0) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+        // si está balanceado, se retorna el nodo sin cambios
+        return node;
     }
-}
