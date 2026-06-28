@@ -1,29 +1,29 @@
-package estructuras;
+package controladores;
 
 import estructuras.Cola;
-import estructuras.LinkedBST;
+import estructuras.AVLTree;
 import estructuras.ItemNotfound;
 import estructuras.ExceptionIsEmpty;
 import modelos.Libro;
 import modelos.Solicitud;
 import modelos.EstadoLibro;
-
+import java.util.List;
 
 public class GestorBiblioteca {
 
     private Cola<Solicitud> colaSolicitudes;
-    private LinkedBST<Libro> arbolLibros;
+    private AVLTree<Libro> arbolLibros;
 
     public GestorBiblioteca() {
         this.colaSolicitudes = new Cola<>();
-        this.arbolLibros = new LinkedBST<>();
+        this.arbolLibros = new AVLTree<>();
     }
 
     public Cola<Solicitud> getColaSolicitudes() {
         return colaSolicitudes;
     }
 
-    public LinkedBST<Libro> getArbolLibros() {
+    public AVLTree<Libro> getArbolLibros() {
         return arbolLibros;
     }
 
@@ -40,7 +40,7 @@ public class GestorBiblioteca {
             Libro libroBuscado = new Libro(idLibro, "Temp", "Temp", "Temp", 0, EstadoLibro.DISPONIBLE);
             Libro libroEncontrado = arbolLibros.search(libroBuscado);
 
-            if (libroEncontrado.getEstado() == EstadoLibro.DISPONIBLE) {
+            if (libroEncontrado.getEstado().equals(EstadoLibro.DISPONIBLE)) {
                 libroEncontrado.setEstado(EstadoLibro.PRESTADO);
                 System.out.println("Préstamo exitoso: El libro '" + libroEncontrado.getTitulo() + 
                                    "' ha sido prestado a " + solicitudActual.getname_eString());
@@ -53,7 +53,7 @@ public class GestorBiblioteca {
         } catch (ExceptionIsEmpty e) {
             System.out.println("Error al procesar los datos del libro: " + e.getMessage());
         } catch (ItemNotfound e) {
-            System.out.println("Error: El libro con código " + solicitudActual.getcode_libro() + " no está registrado en el sistema.");
+            System.out.println("Error: El libro con código " + solicitudActual.getcode_libro() + " no está registrado.");
         }
     }
 
@@ -62,7 +62,7 @@ public class GestorBiblioteca {
             Libro libroBuscado = new Libro(codigoLibro, "Temp", "Temp", "Temp", 0, EstadoLibro.PRESTADO);
             Libro libroEncontrado = arbolLibros.search(libroBuscado);
 
-            if (libroEncontrado.getEstado() == EstadoLibro.PRESTADO) {
+            if (libroEncontrado.getEstado().equals(EstadoLibro.PRESTADO)) {
                 libroEncontrado.setEstado(EstadoLibro.DISPONIBLE);
                 System.out.println("Devolución exitosa. El libro '" + libroEncontrado.getTitulo() + "' ahora está disponible.");
             } else {
@@ -82,17 +82,21 @@ public class GestorBiblioteca {
 
         List<Libro> todosLosLibros = arbolLibros.obtenerListaLibros(); 
         int totales = 0, disponibles = 0, prestados = 0;
+        
         if (todosLosLibros != null) {
             totales = todosLosLibros.size();
             for (Libro libro : todosLosLibros) {
-                if (libro.getEstado() == EstadoLibro.DISPONIBLE) disponibles++;
-                else prestados++; 
+                if (libro.getEstado().equals(EstadoLibro.DISPONIBLE)) {
+                    disponibles++;
+                } else {
+                    prestados++; 
+                }
             }
         }
+        
         System.out.println("Total de libros registrados: " + totales);
         System.out.println("Libros disponibles: " + disponibles);
         System.out.println("Libros prestados: " + prestados);
-        */
         System.out.println("====================================\n");
     }
 }
