@@ -38,9 +38,7 @@ public class Libro implements Comparable<Libro> {
         if (estado.trim().isEmpty()) {
             throw new ExceptionIsEmpty("El estado no puede estar vacio");
         }
-        // Usamos el metodo esValido de EstadoLibro en vez de comparar
-        // a mano. Asi la regla de "que estados existen" vive en un
-        // solo lugar (EstadoLibro) y no se repite en cada clase.
+        
         if (!EstadoLibro.esValido(estado)) {
             throw new ExceptionIsEmpty("El estado debe ser 'Disponible' o 'Prestado'");
         }
