@@ -1,4 +1,5 @@
 package estructuras;
+
 public class AVLTree<E extends Comparable<E>> {
     private NodeAVL<E> root;
     public AVLTree() {
@@ -14,20 +15,23 @@ public class AVLTree<E extends Comparable<E>> {
     private int getBalance(NodeAVL<E> node) {
         return (node == null) ? 0 : height(node.left) - height(node.right);
     }
-    // ROTACIÓN DERECHA 
+    // ROTACIÓN DERECHA
     private NodeAVL<E> rightRotate(NodeAVL<E> y) {
         NodeAVL<E> x = y.left;      // hijo izquierdo
         NodeAVL<E> T2 = x.right;    // subárbol intermedio
         // rotación: x sube, y baja a la derecha
         x.right = y;
         y.left = T2;
-        // actualiza  altura de y después del cambio
+        // actualiza altura de y después del cambio
         y.height = Math.max(height(y.left), height(y.right)) + 1;
+
         // actualizar altura de x (nueva raíz del subárbol)
         x.height = Math.max(height(x.left), height(x.right)) + 1;
+
         return x; // nueva raíz del subárbol
     }
-    // ROTACIÓN IZQUIERDA 
+
+    // ROTACIÓN IZQUIERDA
     private NodeAVL<E> leftRotate(NodeAVL<E> x) {
 
         NodeAVL<E> y = x.right;     // hijo derecho
@@ -43,9 +47,12 @@ public class AVLTree<E extends Comparable<E>> {
 
         return y; // nueva raíz del subárbol
     }
+
+    // INSERTAR
     public void insert(E data) throws ItemDuplicated {
         root = insertRec(root, data);
     }
+
     // INSERCIÓN RECURSIVA
     private NodeAVL<E> insertRec(NodeAVL<E> node, E data) throws ItemDuplicated {
         // si el nodo está vacío se inserta el nuevo libro
@@ -55,15 +62,17 @@ public class AVLTree<E extends Comparable<E>> {
         // comparar el dato con el nodo actual
         int cmp = data.compareTo(node.data);
 
-        // si son iguales  no se permite duplicados
+        // si son iguales no se permite duplicados
         if (cmp == 0) {
             throw new ItemDuplicated("Elemento duplicado: " + data);
         }
-        // si es menor se va  a  ir a la izquierda
+
+        // si es menor se va a ir a la izquierda
         if (cmp < 0) {
             node.left = insertRec(node.left, data);
         }
-        // si es mayor  se va ir a la derecha
+
+        // si es mayor se va a ir a la derecha
         else {
             node.right = insertRec(node.right, data);
         }
@@ -73,10 +82,11 @@ public class AVLTree<E extends Comparable<E>> {
 
         // calcular balance del nodo
         int balance = getBalance(node);
-		
+
         // CASO LL (izquierda-izquierda)
         if (balance > 1 && data.compareTo(node.left.data) < 0)
             return rightRotate(node);
+
         // CASO RR (derecha-derecha)
         if (balance < -1 && data.compareTo(node.right.data) > 0)
             return leftRotate(node);
@@ -94,9 +104,10 @@ public class AVLTree<E extends Comparable<E>> {
         // si está balanceado, se retorna el nodo sin cambios
         return node;
     }
-}     return searchRec(root, data);
+    // BUSCAR UN ELEMENTO
+    public E search(E data) throws ItemNotfound {
+        return searchRec(root, data);
     }
-
     // Método recursivo para buscar un dato
     private E searchRec(NodeAVL<E> node, E data) throws ItemNotfound {
         // Si llegó a null significa que no existe
@@ -112,17 +123,11 @@ public class AVLTree<E extends Comparable<E>> {
         // Si es menor buscar por la izquierda
         if (cmp < 0) {
             return searchRec(node.left, data);
-        }
+        } 
         // Si es mayor buscar por la derecha
         return searchRec(node.right, data);
     }
     // VERIFICAR SI EL ÁRBOL ESTÁ VACÍO
     public boolean isEmpty() {
         return root == null;
-    }
-    // RECORRIDO INORDEN
-    // Muestra los elementos ordenados
-    public void inOrder() {
-        inOrderRec(root);
-        System.out.println();
     }
