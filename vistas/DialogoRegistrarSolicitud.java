@@ -52,3 +52,27 @@ public class DialogoRegistrarSolicitud extends JDialog {
 
         btnRegistrar.addActionListener(e -> {
             try {
+
+                String codEst = txtCodigoEstudiante.getText().trim();
+                String nomEst = txtNombreEstudiante.getText().trim();
+                String codLibro = txtCodigoLibro.getText().trim();
+                String fecha = txtFecha.getText().trim();
+
+                if(codEst.isEmpty() || nomEst.isEmpty() || codLibro.isEmpty() || fecha.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Faltan datos", JOptionPane.WARNING_MESSAGE);
+                    return; // Cortamos la ejecución aquí
+                }
+
+
+                gestor.registrarSolicitud(codEst, nomEst, codLibro, fecha);
+
+                JOptionPane.showMessageDialog(this, "Solicitud agregada a la cola exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+
+            } catch (ExceptionIsEmpty ex) {
+
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
+}
