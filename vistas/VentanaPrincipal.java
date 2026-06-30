@@ -85,10 +85,33 @@ btn8.addActionListener(e -> {
     
     JOptionPane.showMessageDialog(this, textoCola, "Cola de Espera", JOptionPane.INFORMATION_MESSAGE);
 });
-        btn9.addActionListener(e -> {
-            String resultado = gestor.procesarPrestamo();
+btn9.addActionListener(e -> {
+    String resultado = gestor.procesarPrestamo();
             
-            JOptionPane.showMessageDialog(this, resultado, "Atención de Solicitud", JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(this, resultado, "Atención de Solicitud", JOptionPane.INFORMATION_MESSAGE);
+});
+
+btn10.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog(this, 
+                    "Ingrese el código del libro que desea devolver:", 
+                    "Registrar Devolución", 
+                    JOptionPane.QUESTION_MESSAGE);
+            
+            if (input != null && !input.trim().isEmpty()) {
+                try {
+                    int codigo = Integer.parseInt(input.trim());
+
+                    gestor.procesarDevolucion(codigo);
+                    
+                    JOptionPane.showMessageDialog(this, 
+                            "Se intentó procesar la devolución.\n(Revisa la consola de VS Code para ver si fue exitosa o si hubo error)", 
+                            "Proceso Terminado", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                            
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "El código debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
 }
 
