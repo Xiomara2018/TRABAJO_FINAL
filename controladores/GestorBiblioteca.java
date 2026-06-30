@@ -5,10 +5,11 @@ import estructuras.Cola;
 import estructuras.ExceptionIsEmpty;
 import estructuras.ItemDuplicated;
 import estructuras.ItemNotfound;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import modelos.BuscadorLibros;
@@ -66,6 +67,8 @@ public class GestorBiblioteca {
 
         Libro libro = new Libro(codigo, titulo, autor, categoria, anio, EstadoLibro.DISPONIBLE);
         arbolLibros.insert(libro);
+
+        actualizarCSVCompleto();
     }  
     
     public List<Libro> mostrarTodosLosLibros() {
@@ -295,6 +298,22 @@ public class GestorBiblioteca {
             
         } catch (IOException e) {
             return "Error crítico al intentar leer el archivo: " + e.getMessage();
+        }
+    }
+
+    private void actualizarCSVCompleto() {
+        // Al usar 'false' en FileWriter, le decimos que sobrescriba el archivo con los datos más recientes
+        try (PrintWriter pw = new PrintWriter(new FileWriter("libros.csv", false))) {
+            
+            List<Libro> todosLosLibros = arbolLibros.obtenerListaLibros();
+            
+            if (todosLosLibros != null) {
+                for (Libro libro : todosLosLibros) {
+                    pw.println(libro.getCodigo() + "," + libro.getTitulo() + "," + libro.getAutor() + "," + libro.getCategoria() + "," + libro.getAnio() + "," + libro.getEstado().toString());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error crítico al intentar guardar en el archivo CSV: " + e.getMessage());
         }
     }
 }
