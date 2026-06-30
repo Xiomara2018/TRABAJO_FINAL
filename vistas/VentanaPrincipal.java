@@ -80,6 +80,11 @@ btn7.addActionListener(e -> {
     DialogoRegistrarSolicitud dialogo = new DialogoRegistrarSolicitud(this, gestor);
     dialogo.setVisible(true);
 });
+btn8.addActionListener(e -> {
+    String textoCola = gestor.getColaSolicitudes().mostrar();
+    
+    JOptionPane.showMessageDialog(this, textoCola, "Cola de Espera", JOptionPane.INFORMATION_MESSAGE);
+});
 }
 
 public static void main(String[] args) {
