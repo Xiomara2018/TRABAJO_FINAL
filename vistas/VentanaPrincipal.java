@@ -3,6 +3,7 @@ package vistas;
 import controladores.GestorBiblioteca;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class VentanaPrincipal extends JFrame {
     
@@ -22,7 +23,7 @@ public class VentanaPrincipal extends JFrame {
         add(lblTitulo, BorderLayout.NORTH);
 
         JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(6, 2, 10, 10));
+        panelBotones.setLayout(new GridLayout(7, 2, 10, 10));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
         JButton btn1 = new JButton("1. Registrar libro");
@@ -37,6 +38,9 @@ public class VentanaPrincipal extends JFrame {
         JButton btn10 = new JButton("10. Registrar devolución");
         JButton btn11 = new JButton("11. Mostrar reporte");
         JButton btn12 = new JButton("12. Salir");
+        JButton btn13 = new JButton("13. Cargar desde CSV");
+        JButton btn14 = new JButton(""); // Relleno invisible para mantener la cuadrícula
+        btn14.setVisible(false);
 
         panelBotones.add(btn1);
         panelBotones.add(btn7);
@@ -50,6 +54,8 @@ public class VentanaPrincipal extends JFrame {
         panelBotones.add(btn11);
         panelBotones.add(btn6);
         panelBotones.add(btn12);
+        panelBotones.add(btn13);
+        panelBotones.add(btn14);
 
         add(panelBotones, BorderLayout.CENTER);
 
@@ -175,6 +181,22 @@ public class VentanaPrincipal extends JFrame {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea salir?", "Salir", JOptionPane.YES_NO_OPTION);
             if (confirmacion == JOptionPane.YES_OPTION) {
                 System.exit(0);
+            }
+        });
+
+        btn13.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Seleccionar archivo CSV de Libros");
+            // Filtro para que el usuario solo vea archivos .csv
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos CSV (*.csv)", "csv"));
+            
+            int seleccion = fileChooser.showOpenDialog(this);
+            
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+                String resultado = gestor.cargarLibrosDesdeCSV(ruta);
+                
+                JOptionPane.showMessageDialog(this, resultado, "Resultado de Carga Masiva", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
