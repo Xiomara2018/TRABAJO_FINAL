@@ -93,7 +93,7 @@ public class GestorBiblioteca {
         return buscador.buscarPorCategoria(mostrarTodosLosLibros(), categoria);
 
     }
-    
+
     public void registrarSolicitud(String codigoEstudiante, String nombreEstudiante, String codigoLibro, String fecha) {
         Solicitud solicitud = new Solicitud(codigoEstudiante, nombreEstudiante, codigoLibro, fecha);
         colaSolicitudes.enqueque(solicitud);
@@ -111,34 +111,32 @@ public class GestorBiblioteca {
     }
 
 
-
     public String procesarPrestamo() {
         if (colaSolicitudes.IsEmpty()) {
             return "No hay solicitudes pendientes en la cola.";
+            return;
         }
 
-        Solicitud solicitudActual = null; 
+        Solicitud solicitudActual = colaSolicitudes.dequeue();
         
         try {
-            solicitudActual = colaSolicitudes.dequeue();
-            
             int idLibro = Integer.parseInt(solicitudActual.getcode_libro());
             Libro libroBuscado = new Libro(idLibro, "Temp", "Temp", "Temp", 0, EstadoLibro.DISPONIBLE);
             Libro libroEncontrado = arbolLibros.search(libroBuscado);
 
             if (libroEncontrado.getEstado().equals(EstadoLibro.DISPONIBLE)) {
                 libroEncontrado.setEstado(EstadoLibro.PRESTADO);
-                return "Préstamo exitoso: El libro '" + libroEncontrado.getTitulo() + "' ha sido prestado a " + solicitudActual.getname_est();
+                System.out.println("Préstamo exitoso: El libro '" + libroEncontrado.getTitulo() + "' ha sido prestado a " + solicitudActual.getname_eString());
             } else {
-                return "El libro existe, pero actualmente no está disponible.";
+                System.out.println("El libro existe, pero actualmente no está disponible.");
             }
 
-        } catch (NumberFormatException e) {
-            return "Error: El código de libro en la solicitud tiene un formato incorrecto.";
+       } catch (NumberFormatException e) {
+            System.out.println("Error: El código de libro en la solicitud tiene un formato incorrecto.");
         } catch (ExceptionIsEmpty e) {
-            return "Error al procesar: " + e.getMessage();
+            System.out.println("Error al procesar los datos del libro: " + e.getMessage());
         } catch (ItemNotfound e) {
-            return "Error: El libro con código " + solicitudActual.getcode_libro() + " no está registrado.";
+            System.out.println("Error: El libro con código " + solicitudActual.getcode_libro() + " no está registrado.");
         }
     }
 
