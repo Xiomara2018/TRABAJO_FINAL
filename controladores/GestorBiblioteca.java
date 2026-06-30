@@ -32,7 +32,7 @@ public class GestorBiblioteca {
     }
     public void registrarLibro(int codigo, String titulo, String autor, String categoria, int anio, String estado)
         throws ExceptionIsEmpty, ItemDuplicated {
-        Libro libro = new Libro(codigo, titulo, autor, categoria, anio, estado);
+            Libro libro = new Libro(codigo, titulo, autor, categoria, anio, estado);
         arbolLibros.insert(libro);
     }  
     
