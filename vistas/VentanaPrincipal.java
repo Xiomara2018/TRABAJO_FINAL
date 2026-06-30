@@ -49,3 +49,24 @@ public VentanaPrincipal() {
     panelBotones.add(btn11);
     panelBotones.add(btn6);
     panelBotones.add(btn12);
+
+    add(panelBotones, BorderLayout.CENTER);
+
+
+btn12.addActionListener(e -> {
+    int confirmacion = JOptionPane.showConfirmDialog(this, "¿Seguro que desea salir?", "Salir", JOptionPane.YES_NO_OPTION);
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        System.exit(0);
+    }
+});
+
+btn1.addActionListener(e -> JOptionPane.showMessageDialog(this, "Aquí abriremos la ventana para Registrar Libro"));
+}
+
+public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            VentanaPrincipal ventana = new VentanaPrincipal();
+            ventana.setVisible(true);
+        });
+    }
+}
