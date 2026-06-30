@@ -47,4 +47,14 @@ public class DialogoRegistrarLibro extends JDialog {
         panelBotones.add(btnGuardar);
         panelBotones.add(btnCancelar);
         add(panelBotones, BorderLayout.SOUTH);
+
+        tnCancelar.addActionListener(e -> dispose());
+        btnGuardar.addActionListener(e -> {
+            try{
+                int codigo = Integer.parseInt(txtCodigo.getText().trim());
+                String titulo = txtTitulo.getText().trim();
+                String autor = txtAutor.getText().trim();
+                String categoria = txtCategoria.getText().trim();
+                int anio = Integer.parseInt(txtAnio.getText().trim());
+            }
 }
