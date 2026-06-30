@@ -23,4 +23,9 @@ public VentanaPrincipal() {
     btnMostrarLibros.addActionListener(e -> {
         JOptionPane.showMessageDialog(this, "Próximamente: Tabla de libros");
     });
+    add(new JLabel("Bienvenido a QuickLibrary", SwingConstants.CENTER));
+    add(btnRegistrarLibro);
+    add(btnMostrarLibros);
+    add(btnRegistrarSolicitud);
+    }
 }
