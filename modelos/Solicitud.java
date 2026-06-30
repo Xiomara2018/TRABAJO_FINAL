@@ -43,6 +43,10 @@ public class Solicitud {
 
     public void setfecha_soli(String fecha_soli){this.fecha_soli = fecha_soli;}
     public String getfecha_soli(){return this.fecha_soli;}
+    @Override
+    public String toString() {
+        return "Estudiante: " + this.name_est + " | Libro cod: " + this.code_libro + " | Fecha: " + this.fecha_soli;
+    }
 
     
 }
