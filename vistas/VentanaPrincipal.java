@@ -75,6 +75,11 @@ btn3.addActionListener(e -> {
     DialogoBuscarLibro dialogo = new DialogoBuscarLibro(this, gestor);
     dialogo.setVisible(true);
 });
+
+btn7.addActionListener(e -> {
+    DialogoRegistrarSolicitud dialogo = new DialogoRegistrarSolicitud(this, gestor);
+    dialogo.setVisible(true);
+});
 }
 
 public static void main(String[] args) {
