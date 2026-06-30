@@ -147,42 +147,38 @@ public class GestorBiblioteca {
 
             if (libroEncontrado.getEstado().equals(EstadoLibro.PRESTADO)) {
                 libroEncontrado.setEstado(EstadoLibro.DISPONIBLE);
-                return "Devolución exitosa. El libro '" + libroEncontrado.getTitulo() + "' ahora está disponible.";
+                System.out.println("Devolución exitosa. El libro '" + libroEncontrado.getTitulo() + "' ahora está disponible.");
             } else {
-                return "El libro ya se encuentra disponible. No se puede devolver.";
+                System.out.println("El libro ya se encuentra disponible. No se puede devolver.");
             }
 
         } catch (ExceptionIsEmpty e) {
-            return "Error interno creando referencia de libro: " + e.getMessage();
+            System.out.println("Error interno creando referencia de libro: " + e.getMessage());
         } catch (ItemNotfound e) {
-            return "Error: No se encontró ningún libro con el código " + codigoLibro;
+            System.out.println("Error: No se encontró ningún libro con el código " + codigoLibro);
         }
     }
 
-    public String mostrarReporteBasico() {
-        StringBuilder reporte = new StringBuilder();
-        reporte.append("\n=== REPORTE BÁSICO DE BIBLIOTECA ===\n");
-        reporte.append("Solicitudes pendientes en cola: ").append(colaSolicitudes.size()).append("\n");
+ public void mostrarReporteBasico() {
+        System.out.println("\n=== REPORTE BÁSICO DE BIBLIOTECA ===");
+        System.out.println("Solicitudes pendientes en cola: " + colaSolicitudes.size());
 
-        List<Libro> todosLosLibros = arbolLibros.obtenerListaLibros(); 
+        List<Libro> todosLosLibros = arbolLibros.obtenerListaLibros();
         int totales = 0, disponibles = 0, prestados = 0;
-        
+
         if (todosLosLibros != null) {
             totales = todosLosLibros.size();
             for (Libro libro : todosLosLibros) {
                 if (libro.getEstado().equals(EstadoLibro.DISPONIBLE)) {
                     disponibles++;
                 } else {
-                    prestados++; 
+                    prestados++;
                 }
             }
-        }
-        
-        reporte.append("Total de libros registrados: ").append(totales).append("\n");
-        reporte.append("Libros disponibles: ").append(disponibles).append("\n");
-        reporte.append("Libros prestados: ").append(prestados).append("\n");
-        reporte.append("====================================\n");
-
-        return reporte.toString();
+        }        
+        System.out.println("Total de libros registrados: " + totales);
+        System.out.println("Libros disponibles: " + disponibles);
+        System.out.println("Libros prestados: " + prestados);
+        System.out.println("====================================\n");
     }
 }
