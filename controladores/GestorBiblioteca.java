@@ -86,7 +86,12 @@ public class GestorBiblioteca {
     public List<Libro> buscarPorTitulo(String titulo) {
         return buscador.buscarPorTitulo(mostrarTodosLosLibros(), titulo);
     }
-
+    public List<Libro> buscarPorAutor(String autor) {
+        return buscador.buscarPorAutor(mostrarTodosLosLibros(), autor);
+    }
+    public List<Libro> buscarPorCategoria(String categoria) {
+        return buscador.buscarPorCategoria(mostrarTodosLosLibros(), categoria);
+    }
 
 
 
