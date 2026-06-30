@@ -5,6 +5,10 @@ import estructuras.Cola;
 import estructuras.ExceptionIsEmpty;
 import estructuras.ItemDuplicated;
 import estructuras.ItemNotfound;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import modelos.BuscadorLibros;
@@ -237,5 +241,60 @@ public class GestorBiblioteca {
         reporte.append("====================================");
         
         return reporte.toString();
+    }
+
+    public String cargarLibrosDesdeCSV(String rutaArchivo) {
+        int agregados = 0;
+        int errores = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+            String linea;
+            
+            while ((linea = br.readLine()) != null) {
+                // Saltar líneas vacías
+                if (linea.trim().isEmpty()) continue;
+                
+                // Asumimos que el CSV está separado por comas o punto y coma
+                String[] datos = linea.split("[,;]"); 
+                
+                if (datos.length >= 5) {
+                    try {
+                        int codigo = Integer.parseInt(datos[0].trim());
+                        String titulo = datos[1].trim();
+                        String autor = datos[2].trim();
+                        String categoria = datos[3].trim();
+                        int anio = Integer.parseInt(datos[4].trim());
+                        
+                        // Si el CSV trae el estado (6ta columna), lo leemos. Si no, es DISPONIBLE por defecto
+                        EstadoLibro estadoObj = EstadoLibro.DISPONIBLE;
+                        if (datos.length >= 6 && datos[5].trim().equalsIgnoreCase("Prestado")) {
+                            estadoObj = EstadoLibro.PRESTADO;
+                        }
+
+                        // Reutilizamos las validaciones de seguridad
+                        validarCodigo(codigo);
+                        validarTexto(titulo, "Título");
+                        validarTexto(autor, "Autor");
+                        validarTexto(categoria, "Categoría");
+                        validarAnio(anio);
+
+                        // Insertamos en el árbol directamente
+                        Libro libro = new Libro(codigo, titulo, autor, categoria, anio, estadoObj);
+                        arbolLibros.insert(libro);
+                        agregados++;
+                        
+                    } catch (Exception e) {
+                        // Si un libro está duplicado o tiene letras en el código, se cuenta como error y se salta
+                        errores++;
+                    }
+                } else {
+                    errores++;
+                }
+            }
+            return "Carga completada.\nLibros agregados exitosamente: " + agregados + "\nFilas con error u omitidas: " + errores;
+            
+        } catch (IOException e) {
+            return "Error crítico al intentar leer el archivo: " + e.getMessage();
+        }
     }
 }
