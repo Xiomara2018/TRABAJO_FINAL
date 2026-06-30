@@ -23,5 +23,28 @@ public class DialogoRegistrarLibro extends JDialog {
         txtAutor = new JTextField();
         txtCategoria = new JTextField();
         txtAnio = new JTextField();
-    
+        panelFormulario.add(new JLabel("Código (Número):"));
+        panelFormulario.add(txtCodigo);
+        
+        panelFormulario.add(new JLabel("Título:"));
+        panelFormulario.add(txtTitulo);
+        
+        panelFormulario.add(new JLabel("Autor:"));
+        panelFormulario.add(txtAutor);
+        
+        panelFormulario.add(new JLabel("Categoría:"));
+        panelFormulario.add(txtCategoria);
+        
+        panelFormulario.add(new JLabel("Año de Publicación:"));
+        panelFormulario.add(txtAnio);
+
+        add(panelFormulario, BorderLayout.CENTER);
+
+        JPanel panelBotones = new JPanel();
+        JButton btnGuardar = new JButton("Guardar Libro");
+        JButton btnCancelar = new JButton("Cancelar");
+
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnCancelar);
+        add(panelBotones, BorderLayout.SOUTH);
 }
