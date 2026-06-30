@@ -5,22 +5,18 @@ import estructuras.Cola;
 import estructuras.ExceptionIsEmpty;
 import estructuras.ItemNotfound;
 import java.util.List;
+import modelos.BuscadorLibros;
 import modelos.EstadoLibro;
 import modelos.Libro;
 import modelos.Solicitud;
-<<<<<<< HEAD
-import modelos.EstadoLibro;
-import modelos.BuscadorLibros;
-import java.util.ArrayList;
-import java.util.List;
-=======
->>>>>>> 3fc000f046c042a2c260380ce65915b5f4d0aadf
+
+
 
 public class GestorBiblioteca {
 
     private Cola<Solicitud> colaSolicitudes;
     private AVLTree<Libro> arbolLibros;
-    private BuscradorLibros buscador;
+    private BuscadorLibros buscador;
 
     public GestorBiblioteca() {
         this.colaSolicitudes = new Cola<>();
@@ -52,7 +48,7 @@ public class GestorBiblioteca {
 
             if (libroEncontrado.getEstado().equals(EstadoLibro.DISPONIBLE)) {
                 libroEncontrado.setEstado(EstadoLibro.PRESTADO);
-                return "Préstamo exitoso: El libro '" + libroEncontrado.getTitulo() + "' ha sido prestado a " + solicitudActual.getname_eString();
+                return "Préstamo exitoso: El libro '" + libroEncontrado.getTitulo() + "' ha sido prestado a " + solicitudActual.getname_est();
             } else {
                 return "El libro existe, pero actualmente no está disponible.";
             }
