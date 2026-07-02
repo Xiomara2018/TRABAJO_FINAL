@@ -254,10 +254,8 @@ public class GestorBiblioteca {
             String linea;
             
             while ((linea = br.readLine()) != null) {
-                // Saltar líneas vacías
                 if (linea.trim().isEmpty()) continue;
                 
-                // Asumimos que el CSV está separado por comas o punto y coma
                 String[] datos = linea.split("[,;]"); 
                 
                 if (datos.length >= 5) {
@@ -268,26 +266,22 @@ public class GestorBiblioteca {
                         String categoria = datos[3].trim();
                         int anio = Integer.parseInt(datos[4].trim());
                         
-                        // Si el CSV trae el estado (6ta columna), lo leemos. Si no, es DISPONIBLE por defecto
                         EstadoLibro estadoObj = EstadoLibro.DISPONIBLE;
                         if (datos.length >= 6 && datos[5].trim().equalsIgnoreCase("Prestado")) {
                             estadoObj = EstadoLibro.PRESTADO;
                         }
 
-                        // Reutilizamos las validaciones de seguridad
                         validarCodigo(codigo);
                         validarTexto(titulo, "Título");
                         validarTexto(autor, "Autor");
                         validarTexto(categoria, "Categoría");
                         validarAnio(anio);
 
-                        // Insertamos en el árbol directamente
                         Libro libro = new Libro(codigo, titulo, autor, categoria, anio, estadoObj);
                         arbolLibros.insert(libro);
                         agregados++;
                         
-                    } catch (Exception e) {
-                        // Si un libro está duplicado o tiene letras en el código, se cuenta como error y se salta
+                    } catch (ExceptionIsEmpty | ItemDuplicated | NumberFormatException e) {
                         errores++;
                     }
                 } else {

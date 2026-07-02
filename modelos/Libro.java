@@ -24,10 +24,7 @@ public class Libro implements Comparable<Libro> {
 
         if (categoria == null) {
             throw new ExceptionIsEmpty("La categoria no puede estar vacia");
-        }
-
-        
-        
+        }        
         this.codigo = codigo;
         this.titulo = titulo;
         this.autor = autor;

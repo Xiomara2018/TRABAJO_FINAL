@@ -5,7 +5,7 @@ public class EstadoLibro {
     public static final EstadoLibro DISPONIBLE = new EstadoLibro("Disponible");
     public static final EstadoLibro PRESTADO = new EstadoLibro("Prestado");
 
-    private String estado;
+    private final String estado;
 
     // El constructor es privado para que nadie pueda hacer un 'new EstadoLibro("Robado")'
     // Solo existen los dos estados definidos arriba.
